@@ -1,117 +1,124 @@
-import { useState } from "react";
-import { Button } from "../components/ui/Button";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { useState, useEffect } from "react";
 
 export default function ComponentsPage() {
-    const [visibleCode, setVisibleCode] = useState<string | null>(null);
-    const [selectedLanguage, setSelectedLanguage] = useState<{ [key: string]: string }>({
-        button: "html",
-        alert: "html",
-    });
-    const [copied, setCopied] = useState<string | null>(null);
+    const [selectedFramework, setSelectedFramework] = useState<"tailwind" | "bootstrap">("tailwind");
+    const [showCode, setShowCode] = useState(false);
 
-    const handleCopy = (code: string, type: string) => {
+    // Tailwind Button Code
+    const tailwindCodeHTML = `<button class="px-4 py-2 bg-blue-500 text-white rounded">Tailwind Button</button>`;
+    const tailwindCodeJSX = `<button className="px-4 py-2 bg-blue-500 text-white rounded">Tailwind Button</button>`;
+
+    // Bootstrap Button Code
+    const bootstrapCodeHTML = `<button class="btn btn-primary">Bootstrap Button</button>`;
+    const bootstrapCodeJSX = `<button className="btn btn-primary">Bootstrap Button</button>`;
+
+    useEffect(() => {
+        if (selectedFramework === "bootstrap") {
+            const bootstrapCDN = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css";
+            let iframe = document.getElementById("bootstrapPreview") as HTMLIFrameElement;
+
+            if (iframe && iframe.contentWindow?.document) {
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(`
+                     <html>
+        <head>
+            <link rel="stylesheet" href="${bootstrapCDN}" />
+            <style>
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    overflow: hidden;
+                }
+            </style>
+        </head>
+        <body style="margin: 16px;">
+            <button class="btn btn-primary">Bootstrap Button</button>
+        </body>
+    </html>
+                `);
+                doc.close();
+            }
+        }
+    }, [selectedFramework]);
+
+    // Function to Copy Code
+    const copyToClipboard = (code: string) => {
         navigator.clipboard.writeText(code);
-        setCopied(type);
-        setTimeout(() => setCopied(null), 2000);
-    };
-
-    const toggleView = (type: string) => {
-        setVisibleCode(visibleCode === type ? null : type);
-    };
-
-    const handleLanguageChange = (type: string, language: string) => {
-        setSelectedLanguage((prev) => ({ ...prev, [type]: language }));
-    };
-
-    const codeSamples = {
-        button: {
-            html: `<button class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Example Button</button>`,
-            react: `<Button className="mt-2">Example Button</Button>`,
-        },
-        alert: {
-            html: `<div class="bg-red-100 p-2 rounded-md">Example Alert</div>`,
-            react: `<div className="bg-red-100 p-2 rounded-md">Example Alert</div>`,
-        },
+        alert("Code copied to clipboard!");
     };
 
     return (
         <div className="p-8">
-            <h2 className="text-2xl font-semibold">Available Components</h2>
-            <div className="mt-4 grid grid-cols-1 gap-4">
+            <h2 className="text-2xl font-semibold mb-4">Available Components</h2>
 
-                {/* Button Component */}
-                <div className="border p-4 rounded-lg relative">
-                    <h3 className="font-semibold mb-2">Buttons</h3>
+            {/* Framework Selector */}
+            <div className="mb-4 flex gap-4">
+                <label className="font-semibold">Select Framework:</label>
+                <select
+                    className="px-3 py-1 border rounded-md"
+                    value={selectedFramework}
+                    onChange={(e) => setSelectedFramework(e.target.value as "tailwind" | "bootstrap")}
+                >
+                    <option value="tailwind">Tailwind v4</option>
+                    <option value="bootstrap">Bootstrap v5</option>
+                </select>
+            </div>
 
-                    {visibleCode === "button" ? (
-                        <SyntaxHighlighter language={selectedLanguage.button} style={dracula} className="mt-2 p-2 rounded-md text-sm">
-                            {codeSamples.button[selectedLanguage.button]}
-                        </SyntaxHighlighter>
-                    ) : (
-                        <Button className="mt-2">Example Button</Button>
-                    )}
+            {/* Preview Section */}
+            <div className="border p-6 rounded-lg shadow-md bg-white">
+                <h3 className="text-lg font-semibold mb-2">Preview</h3>
+                
+                {selectedFramework === "tailwind" ? (
+                    <button className="px-4 py-2 bg-blue-500 text-white rounded">Tailwind Button</button>
+                ) : (
+                    <iframe
+                        id="bootstrapPreview"
+                        className="border rounded-md w-full h-16"
+                        style={{ border: "1px solid #ccc" }}
+                    ></iframe>
+                )}
+            </div>
 
-                    <div className="absolute top-2 right-2 flex gap-2">
-                        <select
-                            className="text-sm px-2 py-1 border rounded-md"
-                            value={selectedLanguage.button}
-                            onChange={(e) => handleLanguageChange("button", e.target.value)}
-                        >
-                            <option value="html">HTML</option>
-                            <option value="react">React</option>
-                        </select>
-                        <button
-                            onClick={() => toggleView("button")}
-                            className="text-sm bg-blue-600 text-white px-2 py-1 rounded-md"
-                        >
-                            {visibleCode === "button" ? "Preview" : "View Code"}
-                        </button>
-                        <button
-                            onClick={() => handleCopy(codeSamples.button[selectedLanguage.button], "button")}
-                            className="text-sm bg-gray-800 text-white px-2 py-1 rounded-md"
-                        >
-                            {copied === "button" ? "Copied!" : "Copy"}
-                        </button>
-                    </div>
+            {/* Code View Section */}
+            <div className="mt-6 border p-6 rounded-lg shadow-md bg-gray-50">
+                <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-lg font-semibold">Code</h3>
+                    <button
+                        className="px-3 py-1 text-sm bg-gray-200 rounded"
+                        onClick={() => setShowCode(!showCode)}
+                    >
+                        {showCode ? "Hide Code" : "Show Code"}
+                    </button>
                 </div>
 
-                {/* Alert Component */}
-                <div className="border p-4 rounded-lg relative">
-                    <h3 className="font-semibold mb-2">Alerts</h3>
+                {showCode && (
+    <div className="bg-gray-800 text-white p-4 rounded">
+        <div className="relative">
+            <pre className="bg-gray-900 p-3 rounded overflow-x-auto whitespace-pre-wrap break-words max-w-full">
+                {selectedFramework === "tailwind" ? tailwindCodeHTML : bootstrapCodeHTML}
+            </pre>
+            <button
+                className="absolute top-2 right-2 px-3 py-1 bg-gray-700 text-white rounded text-sm"
+                onClick={() => copyToClipboard(selectedFramework === "tailwind" ? tailwindCodeHTML : bootstrapCodeHTML)}
+            >
+                Copy HTML
+            </button>
+        </div>
 
-                    {visibleCode === "alert" ? (
-                        <SyntaxHighlighter language={selectedLanguage.alert} style={dracula} className="mt-2 p-2 rounded-md text-sm">
-                            {codeSamples.alert[selectedLanguage.alert]}
-                        </SyntaxHighlighter>
-                    ) : (
-                        <div className="bg-red-100 p-2 rounded-md">Example Alert</div>
-                    )}
-
-                    <div className="absolute top-2 right-2 flex gap-2">
-                        <select
-                            className="text-sm px-2 py-1 border rounded-md"
-                            value={selectedLanguage.alert}
-                            onChange={(e) => handleLanguageChange("alert", e.target.value)}
-                        >
-                            <option value="html">HTML</option>
-                            <option value="react">React</option>
-                        </select>
-                        <button
-                            onClick={() => toggleView("alert")}
-                            className="text-sm bg-blue-600 text-white px-2 py-1 rounded-md"
-                        >
-                            {visibleCode === "alert" ? "Preview" : "View Code"}
-                        </button>
-                        <button
-                            onClick={() => handleCopy(codeSamples.alert[selectedLanguage.alert], "alert")}
-                            className="text-sm bg-gray-800 text-white px-2 py-1 rounded-md"
-                        >
-                            {copied === "alert" ? "Copied!" : "Copy"}
-                        </button>
-                    </div>
-                </div>
+        <div className="relative mt-4">
+            <pre className="bg-gray-900 p-3 rounded overflow-x-auto whitespace-pre-wrap break-words max-w-full">
+                {selectedFramework === "tailwind" ? tailwindCodeJSX : bootstrapCodeJSX}
+            </pre>
+            <button
+                className="absolute top-2 right-2 px-3 py-1 bg-gray-700 text-white rounded text-sm"
+                onClick={() => copyToClipboard(selectedFramework === "tailwind" ? tailwindCodeJSX : bootstrapCodeJSX)}
+            >
+                Copy JSX
+            </button>
+        </div>
+    </div>
+)}
 
             </div>
         </div>
