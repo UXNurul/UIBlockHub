@@ -16,11 +16,11 @@ export default function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
                 <h2 className="text-lg font-bold">UIBlockHub</h2>
                 <nav className="mt-4">
                     <ul>
-                        <li className="py-2">
+                        {/* <li className="py-2">
                             <Link to="/">Home</Link>
-                        </li>
+                        </li> */}
                         <li className="py-2">
-                            <Link to="/components">Components</Link>
+                            <Link to="/">Components</Link>
                         </li>
                         <li className="py-2">
                             <Link to="/about">About</Link>

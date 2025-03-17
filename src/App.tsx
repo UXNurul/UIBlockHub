@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/ThemeProvider";
 import Sidebar from "./components/ui/Sidebar";
-import ComponentsPage from "./pages/ComponentsPage";
+import ComponentsPage from "./pages/componentsPages/ComponentsPage";
 import AboutPage from "./pages/AboutPage";
+import ButtonsPage from "./pages/componentsPages/ButtonsPage";
 
 
 export default function App() {
@@ -48,8 +49,9 @@ export default function App() {
 
             <main className="p-8">
               <Routes>
-                <Route path="/" element={<h2 className="text-2xl font-semibold">Welcome to UIBlockHub</h2>} />
-                <Route path="/components" element={<ComponentsPage />} />
+                {/* <Route path="/" element={<h2 className="text-2xl font-semibold">Welcome to UIBlockHub</h2>} /> */}
+                <Route path="/" element={<ComponentsPage />} />
+                <Route path="/components/buttons" element={<ButtonsPage />} />
                 <Route path="/about" element={<AboutPage />} />
               </Routes>
             </main>
