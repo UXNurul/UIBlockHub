@@ -20,7 +20,7 @@ const ComponentsPage = () => {
 
                     <Link
                         className="bg-base-100 border-base-content/20 block size-full overflow-hidden rounded-xl border transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-md"
-                        to="/components/buttons"
+                        to="/tailwind/components/buttons"
                     >
                         <div className="bg-base-200/20 flex h-52 items-center justify-center">
                             <svg width={178} height={86} viewBox="0 0 178 86" fill="none">

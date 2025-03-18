@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 const ButtonsPage = () => {
     const [selectedFramework, setSelectedFramework] = useState<"tailwind" | "bootstrap">("tailwind");
     const iframeRef = useRef(null);
-
+    const [activeTab, setActiveTab] = useState<"preview" | "html" | "jsx">("preview");
+    const [copyMessage, setCopyMessage] = useState<string | null>(null);
     const bootstrapButtons = [
         { id: 1, label: "Primary", className: "btn btn-primary", type: "default" },
         { id: 2, label: "Secondary", className: "btn btn-secondary", type: "default" },
@@ -57,6 +58,18 @@ const ButtonsPage = () => {
         }
     }, [selectedFramework]);
 
+    const generateCode = (type: "html" | "jsx") => {
+        return tailwindButtons.map(btn => `<button ${type === "jsx" ? "className" : "class"}="${btn.className}">${btn.label}</button>`).join("\n");
+    };
+
+    const copyToClipboard = (type: "html" | "jsx") => {
+        const code = generateCode(type);
+        navigator.clipboard.writeText(code).then(() => {            
+            setCopyMessage(`Tailwind ${type.toUpperCase()} copied to clipboard!`);
+            setTimeout(() => setCopyMessage(null), 3000); // Hide message after 2 seconds
+        });
+    };
+
     return (
         <div>
 
@@ -75,6 +88,40 @@ const ButtonsPage = () => {
                 ))}
             </div>
 
+            <div className="bg-gray-300 p-1 rounded-lg">
+                {["preview", "html", "jsx"].map((tab) => (
+                    <button
+                        key={tab}
+                        className={`px-4 py-2 rounded-lg transition text-sm cursor-pointer ${activeTab === tab ? "bg-white" : ""}`}
+                        onClick={() => setActiveTab(tab as "preview" | "html" | "jsx")}
+                    >
+                        {tab.toUpperCase()}
+                    </button>
+                ))}
+            </div>
+
+            {copyMessage && <div className="text-green-600">{copyMessage}</div>}
+
+            <div className="flex items-center gap-3">
+                        <button className="px-2 py-1 border rounded-lg text-sm cursor-pointer" onClick={() => copyToClipboard("html")}>
+                            Copy HTML
+                        </button>
+                        <button className="px-2 py-1 border rounded-lg text-sm cursor-pointer" onClick={() => copyToClipboard("jsx")}>
+                            Copy JSX
+                        </button>
+                    </div>
+
+            {activeTab === "html" && (
+                <pre className="bg-gray-800 text-white p-4 rounded overflow-x-auto">
+                    {generateCode("html")}
+                </pre>
+            )}
+
+            {activeTab === "jsx" && (
+                <pre className="bg-gray-800 text-white p-4 rounded overflow-x-auto">
+                    {generateCode("jsx")}
+                </pre>
+            )}
 
             {selectedFramework === "tailwind" && <div>
                 <h5 className="text-xl font-semibold my-4">Default Buttons</h5>
