@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./components/ui/ThemeProvider";
 import Sidebar from "./components/ui/Sidebar";
-import ComponentsPage from "./pages/tailwind/componentsPages/ComponentsPage";
+import ComponentsPage from "./pages/ComponentsPage";
 import AboutPage from "./pages/AboutPage";
 import BootstrapButtonsPage from "./pages/bootstrap/BootstrapButtonsPage";
 import TailwindButtonsPage from "./pages/tailwind/TailwindButtonsPage";
@@ -32,11 +32,11 @@ export default function App() {
               <h1 className="text-xl font-bold">UIBlockHub</h1>
 
               <div className="flex gap-2 items-center">
-                {darkMode ?
+                {/* {darkMode ?
                   <span onClick={() => setDarkMode(!darkMode)} className="cursor-pointer">&#9790;</span>
                   :
                   <span onClick={() => setDarkMode(!darkMode)} className="cursor-pointer">&#9728;</span>
-                }
+                } */}
 
                 <button
                   onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -50,7 +50,6 @@ export default function App() {
 
             <main className="p-8">
               <Routes>
-                {/* <Route path="/" element={<h2 className="text-2xl font-semibold">Welcome to UIBlockHub</h2>} /> */}
                 <Route path="/" element={<ComponentsPage />} />
                 <Route path="/tailwind/components/buttons" element={<TailwindButtonsPage />} />
                 <Route path="/bootstrap/components/buttons" element={<BootstrapButtonsPage />} />

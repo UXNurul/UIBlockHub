@@ -16,8 +16,6 @@ const fetchButtonsFromAPI = async (): Promise<ButtonData[]> => {
         { id: 3, label: "Success", class: "btn btn-success", variant: "default" },
         { id: 4, label: "Gradient Blue", class: "btn btn-primary text-white", css: "background: linear-gradient(to right, #007bff, #0056b3); border: none;", variant: "gradient" },
         { id: 5, label: "Gradient Red", class: "btn btn-danger text-white", css: "background: linear-gradient(to right, #ff0000, #b30000); border: none;", variant: "gradient" },
-        { id: 6, label: "Custom Purple", class: "btn text-white", css: "background: purple; border: none;", variant: "custom" },
-        { id: 7, label: "Material Blue", class: "btn text-white", css: "background: blue; border: none;", variant: "material" },
     ];
 };
 

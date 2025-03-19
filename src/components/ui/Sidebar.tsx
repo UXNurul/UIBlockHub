@@ -12,11 +12,10 @@ export default function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
     const location = useLocation();
     const [selectedValue, setSelectedValue] = useState("");
 
-    // Set default selected value from URL
     useEffect(() => {
         const pathSegments = location.pathname.split("/");
         if (pathSegments.length > 1) {
-            setSelectedValue(pathSegments[1]); // Extract 'tailwind' or 'bootstrap'
+            setSelectedValue(pathSegments[1]);
         }
     }, [location.pathname]);
 
@@ -30,7 +29,6 @@ export default function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
 
     return (
         <>
-            {/* Sidebar */}
             <aside
                 className={`w-64 bg-gray-800 text-white p-4 transition-transform ${isOpen ? "translate-x-0" : "-translate-x-64"
                     } fixed h-full`}
