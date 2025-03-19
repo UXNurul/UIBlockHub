@@ -31,30 +31,27 @@ const BootstrapButtonsPage = () => {
         }
     }, []);
 
-    // Function to update iframe height
     const adjustIframeHeight = () => {
         setTimeout(() => {
             if (iframeRef.current?.contentWindow?.document?.body) {
                 const newHeight = iframeRef.current.contentWindow.document.body.scrollHeight + "px";
                 iframeRef.current.style.height = newHeight;
             }
-        }, 50); // Ensure a slight delay for smooth update
+        }, 50);
     };
 
     useEffect(() => {
         if (iframeDoc) {
             const rootElement = iframeDoc.getElementById("react-root");
             if (rootElement) {
-                // **Reset React root if iframe reloads**
                 if (rootRef.current) {
-                    rootRef.current.unmount(); // Unmount old root before re-rendering
+                    rootRef.current.unmount();
                 }
-                
+
                 rootRef.current = createRoot(rootElement);
                 rootRef.current.render(<BootstrapButtonsHtml adjustIframeHeight={adjustIframeHeight} />);
                 adjustIframeHeight();
 
-                // **Handle iframe reload issues**
                 iframeDoc.addEventListener("DOMContentLoaded", adjustIframeHeight);
                 return () => {
                     iframeDoc.removeEventListener("DOMContentLoaded", adjustIframeHeight);

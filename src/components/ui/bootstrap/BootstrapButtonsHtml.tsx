@@ -23,8 +23,7 @@ const fetchButtonsFromAPI = async (): Promise<ButtonData[]> => {
 
 const BootstrapButtonsHtml = ({ adjustIframeHeight }: { adjustIframeHeight: () => void }) => {
     const [groupedButtons, setGroupedButtons] = useState<Record<string, ButtonData[]>>({});
-    
-    // ✅ Store activeTab per variant
+
     const [activeTabs, setActiveTabs] = useState<Record<string, "preview" | "html" | "jsx">>({});
 
     useEffect(() => {
@@ -39,7 +38,6 @@ const BootstrapButtonsHtml = ({ adjustIframeHeight }: { adjustIframeHeight: () =
 
             setGroupedButtons(grouped);
 
-            // ✅ Initialize active tab for each variant
             const initialTabs = Object.keys(grouped).reduce<Record<string, "preview" | "html" | "jsx">>(
                 (acc, variant) => ({ ...acc, [variant]: "preview" }),
                 {}
@@ -70,15 +68,15 @@ const BootstrapButtonsHtml = ({ adjustIframeHeight }: { adjustIframeHeight: () =
                 <div key={variant} className="mb-4">
                     <h5 className="fw-semibold mb-2">{variant.replace(/^\w/, (c) => c.toUpperCase())} Buttons</h5>
 
-                    <BootstrapTabs 
-                        activeTab={activeTabs[variant] || "preview"} 
+                    <BootstrapTabs
+                        activeTab={activeTabs[variant] || "preview"}
                         setActiveTab={(tab) => {
                             setActiveTabs((prev) => {
                                 return {
                                     ...prev,
-                                    [variant]: tab as "preview" | "html" | "jsx", // Explicitly typecasting to the correct type
+                                    [variant]: tab as "preview" | "html" | "jsx",
                                 };
-                            });   
+                            });
                             adjustIframeHeight();
                         }}
                     >
@@ -100,7 +98,7 @@ const BootstrapButtonsHtml = ({ adjustIframeHeight }: { adjustIframeHeight: () =
                             jsx: (
                                 <pre className="bg-dark text-white px-4 py-5 rounded m-0">
                                     {buttons.map((btn) => {
-                                        const styleObject = parseCSS(btn.css); // Convert CSS string to object
+                                        const styleObject = parseCSS(btn.css);
                                         return `<button className="${btn.class}"${btn.css ? ` style={${JSON.stringify(styleObject)}}` : ""}>${btn.label}</button>`;
                                     }).join("\n")}
                                 </pre>
