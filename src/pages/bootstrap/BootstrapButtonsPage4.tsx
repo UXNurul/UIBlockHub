@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { createRoot, Root } from "react-dom/client";
+import { createRoot, Root } from "react-dom/client"; // Import Root type
 import BootstrapButtonsHtml from "../../components/ui/bootstrap/BootstrapButtonsHtml";
 
 const BootstrapButtonsPage = () => {
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const [iframeDoc, setIframeDoc] = useState<Document | null>(null);
-    const rootRef = useRef<Root | null>(null);
+    const rootRef = useRef<Root | null>(null); // Store root instance
+    const [activeTab, setActiveTab] = useState<'preview' | 'html' | 'jsx'>("preview"); // Track active tab
 
     useEffect(() => {
         if (iframeRef.current) {
@@ -35,37 +36,39 @@ const BootstrapButtonsPage = () => {
     const adjustIframeHeight = () => {
         setTimeout(() => {
             if (iframeRef.current?.contentWindow?.document?.body) {
-                const newHeight = iframeRef.current.contentWindow.document.body.scrollHeight + "px";
-                iframeRef.current.style.height = newHeight;
+                iframeRef.current.style.height =
+                    iframeRef.current.contentWindow.document.body.scrollHeight + "px";
             }
-        }, 50); // Ensure a slight delay for smooth update
+        }, 100);
     };
 
     useEffect(() => {
         if (iframeDoc) {
             const rootElement = iframeDoc.getElementById("react-root");
             if (rootElement) {
-                // **Reset React root if iframe reloads**
-                if (rootRef.current) {
-                    rootRef.current.unmount(); // Unmount old root before re-rendering
+                if (!rootRef.current) {
+                    rootRef.current = createRoot(rootElement);
                 }
-                
-                rootRef.current = createRoot(rootElement);
-                rootRef.current.render(<BootstrapButtonsHtml adjustIframeHeight={adjustIframeHeight} />);
+                rootRef.current.render(<BootstrapButtonsHtml activeTab={activeTab} setActiveTab={setActiveTab} />);
                 adjustIframeHeight();
-
-                // **Handle iframe reload issues**
-                iframeDoc.addEventListener("DOMContentLoaded", adjustIframeHeight);
-                return () => {
-                    iframeDoc.removeEventListener("DOMContentLoaded", adjustIframeHeight);
-                };
             }
         }
-    }, [iframeDoc]);
+    }, [iframeDoc, activeTab]); // Run on tab change
 
     return (
         <div>
             <h2 className="text-2xl font-semibold mb-4">Bootstrap Buttons Components</h2>
+            <div className="bg-gray-200 p-1 rounded mb-2">
+                {["preview", "html", "jsx"].map((tab) => (
+                    <button
+                        key={tab}
+                        className={`rounded border-0 p-2 text-sm ${activeTab === tab ? "bg-white" : ""}`}
+                        onClick={() => setActiveTab(tab as "preview" | "html" | "jsx")}
+                    >
+                        {tab.toUpperCase()}
+                    </button>
+                ))}
+            </div>
             <iframe ref={iframeRef} className="w-full overflow-hidden" />
         </div>
     );

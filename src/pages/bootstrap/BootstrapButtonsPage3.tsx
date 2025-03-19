@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { createRoot, Root } from "react-dom/client";
+import { createRoot, Root } from "react-dom/client"; // Import Root type
 import BootstrapButtonsHtml from "../../components/ui/bootstrap/BootstrapButtonsHtml";
 
 const BootstrapButtonsPage = () => {
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const [iframeDoc, setIframeDoc] = useState<Document | null>(null);
-    const rootRef = useRef<Root | null>(null);
+    const rootRef = useRef<Root | null>(null); // Store root instance
 
     useEffect(() => {
         if (iframeRef.current) {
@@ -31,34 +31,24 @@ const BootstrapButtonsPage = () => {
         }
     }, []);
 
-    // Function to update iframe height
-    const adjustIframeHeight = () => {
-        setTimeout(() => {
-            if (iframeRef.current?.contentWindow?.document?.body) {
-                const newHeight = iframeRef.current.contentWindow.document.body.scrollHeight + "px";
-                iframeRef.current.style.height = newHeight;
-            }
-        }, 50); // Ensure a slight delay for smooth update
-    };
-
     useEffect(() => {
         if (iframeDoc) {
             const rootElement = iframeDoc.getElementById("react-root");
             if (rootElement) {
-                // **Reset React root if iframe reloads**
-                if (rootRef.current) {
-                    rootRef.current.unmount(); // Unmount old root before re-rendering
+                if (!rootRef.current) {
+                    // Only createRoot once
+                    rootRef.current = createRoot(rootElement);
                 }
-                
-                rootRef.current = createRoot(rootElement);
-                rootRef.current.render(<BootstrapButtonsHtml adjustIframeHeight={adjustIframeHeight} />);
-                adjustIframeHeight();
+                rootRef.current.render(<BootstrapButtonsHtml />);
 
-                // **Handle iframe reload issues**
-                iframeDoc.addEventListener("DOMContentLoaded", adjustIframeHeight);
-                return () => {
-                    iframeDoc.removeEventListener("DOMContentLoaded", adjustIframeHeight);
-                };
+                setTimeout(() => {
+                    if (iframeRef.current?.contentWindow?.document?.body) {
+                        iframeRef.current.style.height = 
+                            iframeRef.current.contentWindow.document.body.scrollHeight + "px";
+                    }
+                }, 100);
+
+                
             }
         }
     }, [iframeDoc]);
@@ -66,7 +56,10 @@ const BootstrapButtonsPage = () => {
     return (
         <div>
             <h2 className="text-2xl font-semibold mb-4">Bootstrap Buttons Components</h2>
-            <iframe ref={iframeRef} className="w-full overflow-hidden" />
+            <iframe
+                ref={iframeRef}
+                className="w-full overflow-hidden"
+            />
         </div>
     );
 };
