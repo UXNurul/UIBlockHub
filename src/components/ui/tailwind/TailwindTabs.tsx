@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 
-interface BootstrapTabsProps {
+interface TabsProps {
     activeTab: string;
     setActiveTab: Dispatch<SetStateAction<"preview" | "html" | "jsx">>;
     children: {
@@ -10,22 +10,19 @@ interface BootstrapTabsProps {
     };
 }
 
-const BootstrapTabs = ({ activeTab, setActiveTab, children }: BootstrapTabsProps) => {
-    // const [activeTab, setActiveTab] = useState<"preview" | "html" | "jsx">("preview");
+const TailwindTabs = ({ activeTab, setActiveTab, children }: TabsProps) => {
     const [copyStatus, setCopyStatus] = useState<string | null>(null);
 
-    // Function to extract text content from a React node
     const extractTextContent = (content: React.ReactNode): string => {
         if (typeof content === "string") {
-            return content; // If it's already a string, return as is
+            return content;
         }
         if (typeof content === "object" && "props" in (content as any)) {
-            return (content as any).props.children?.toString() || ""; // Extract text from props.children
+            return (content as any).props.children?.toString() || "";
         }
-        return ""; // Return empty string if content is not valid
+        return "";
     };
 
-    // Function to copy text to clipboard
     const handleCopy = (content: React.ReactNode, type: "HTML" | "JSX") => {
         const textToCopy = extractTextContent(content);
 
@@ -41,16 +38,16 @@ const BootstrapTabs = ({ activeTab, setActiveTab, children }: BootstrapTabsProps
         <div>
 
 
-            <div className="border border-secondary rounded-3 p-3 mt-2 position-relative">
+            <div className="border border-gray-500 rounded-lg p-4 mt-2 position-relative">
 
                 {/* Tabs Navigation */}
-                <div className="d-flex justify-content-between mb-2">
+                <div className="flex justify-between mb-2">
 
-                    <div className="d-flex align-items-center bg-secondary p-1 rounded-2">
+                    <div className="flex items-center bg-gray-500 p-1 rounded-md">
                         {["preview", "html", "jsx"].map((tab) => (
                             <button
                                 key={tab}
-                                className={`btn-sm btn border-0 ${activeTab === tab ? "bg-light" : "bg-secondary text-white"}`}
+                                className={`px-2 py-1 rounded text-sm cursor-pointer  ${activeTab === tab ? "bg-white" : "bg-gray-500 text-white"}`}
                                 onClick={() => setActiveTab(tab as "preview" | "html" | "jsx")}
                             >
                                 {tab.toUpperCase()}
@@ -58,10 +55,10 @@ const BootstrapTabs = ({ activeTab, setActiveTab, children }: BootstrapTabsProps
                         ))}
                     </div>
 
-                    <div className="d-flex gap-2 align-items-center">
+                    <div className="flex gap-2 items-center">
                         {["HTML", "JSX"].map((code) => (
                             <button
-                                className="btn btn-sm border border-secondary bg-light"
+                                className="px-2 py-1 rounded text-sm cursor-pointer border bg-gray-100"
                                 onClick={() => handleCopy(code === "HTML" ? children.html : children.jsx, code as "HTML" | "JSX")}
                             >
                                 {copyStatus === `${code} Copied!` ? `✔ ${code} Copied` : `Copy ${code}`}
@@ -75,10 +72,10 @@ const BootstrapTabs = ({ activeTab, setActiveTab, children }: BootstrapTabsProps
                 {activeTab === "preview" && children.preview}
 
                 {(activeTab === "html" || activeTab === "jsx") && (
-                    <div className="position-relative">
+                    <div className="relative">
                         {/* Copy Button */}
                         <button
-                            className="btn btn-sm bg-light p-1 position-absolute top-0 end-0 m-1"
+                            className="rounded bg-gray-100 p-1 absolute top-0 end-0 m-1"
                             onClick={() => handleCopy(activeTab === "html" ? children.html : children.jsx, activeTab.toUpperCase() as "HTML" | "JSX")}
                         >
                             {copyStatus === `${activeTab.toUpperCase()} Copied!` ? `✔ ${activeTab.toUpperCase()} Copied` : "📋"}
@@ -94,4 +91,4 @@ const BootstrapTabs = ({ activeTab, setActiveTab, children }: BootstrapTabsProps
     );
 };
 
-export default BootstrapTabs;
+export default TailwindTabs;

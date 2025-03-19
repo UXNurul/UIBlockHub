@@ -4,8 +4,8 @@ import { ThemeProvider } from "./components/ui/ThemeProvider";
 import Sidebar from "./components/ui/Sidebar";
 import ComponentsPage from "./pages/tailwind/componentsPages/ComponentsPage";
 import AboutPage from "./pages/AboutPage";
-import ButtonsPage from "./pages/tailwind/componentsPages/ButtonsPage";
 import BootstrapButtonsPage from "./pages/bootstrap/BootstrapButtonsPage";
+import TailwindButtonsPage from "./pages/tailwind/TailwindButtonsPage";
 
 
 export default function App() {
@@ -52,7 +52,7 @@ export default function App() {
               <Routes>
                 {/* <Route path="/" element={<h2 className="text-2xl font-semibold">Welcome to UIBlockHub</h2>} /> */}
                 <Route path="/" element={<ComponentsPage />} />
-                <Route path="/tailwind/components/buttons" element={<ButtonsPage />} />
+                <Route path="/tailwind/components/buttons" element={<TailwindButtonsPage />} />
                 <Route path="/bootstrap/components/buttons" element={<BootstrapButtonsPage />} />
                 <Route path="/about" element={<AboutPage />} />
               </Routes>
