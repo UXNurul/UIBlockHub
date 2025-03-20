@@ -6,10 +6,11 @@ import ComponentsPage from "./pages/ComponentsPage";
 import AboutPage from "./pages/AboutPage";
 import BootstrapButtonsPage from "./pages/bootstrap/BootstrapButtonsPage";
 import TailwindButtonsPage from "./pages/tailwind/TailwindButtonsPage";
+import TailwindCardsPage from "./pages/tailwind/TailwindCardsPage";
 
 
 export default function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, ] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
@@ -52,6 +53,8 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<ComponentsPage />} />
                 <Route path="/tailwind/components/buttons" element={<TailwindButtonsPage />} />
+                <Route path="/tailwind/components/cards" element={<TailwindCardsPage />} />
+
                 <Route path="/bootstrap/components/buttons" element={<BootstrapButtonsPage />} />
                 <Route path="/about" element={<AboutPage />} />
               </Routes>

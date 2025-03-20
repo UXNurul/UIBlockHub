@@ -29,7 +29,7 @@ const BootstrapButtonsPage = () => {
                 setIframeDoc(doc);
             }
         }
-    }, []);
+    }, [iframeRef]);
 
     const adjustIframeHeight = () => {
         setTimeout(() => {

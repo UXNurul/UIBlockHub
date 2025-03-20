@@ -19,7 +19,9 @@ const BootstrapTabs = ({ activeTab, setActiveTab, children }: BootstrapTabsProps
         if (typeof content === "string") {
             return content; // If it's already a string, return as is
         }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if (typeof content === "object" && "props" in (content as any)) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return (content as any).props.children?.toString() || ""; // Extract text from props.children
         }
         return ""; // Return empty string if content is not valid
@@ -61,6 +63,7 @@ const BootstrapTabs = ({ activeTab, setActiveTab, children }: BootstrapTabsProps
                     <div className="d-flex gap-2 align-items-center">
                         {["HTML", "JSX"].map((code) => (
                             <button
+                                key={code}
                                 className="btn btn-sm border border-secondary bg-light"
                                 onClick={() => handleCopy(code === "HTML" ? children.html : children.jsx, code as "HTML" | "JSX")}
                             >

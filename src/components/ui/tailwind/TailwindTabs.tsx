@@ -17,7 +17,9 @@ const TailwindTabs = ({ activeTab, setActiveTab, children }: TabsProps) => {
         if (typeof content === "string") {
             return content;
         }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if (typeof content === "object" && "props" in (content as any)) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return (content as any).props.children?.toString() || "";
         }
         return "";
@@ -58,6 +60,7 @@ const TailwindTabs = ({ activeTab, setActiveTab, children }: TabsProps) => {
                     <div className="flex gap-2 items-center">
                         {["HTML", "JSX"].map((code) => (
                             <button
+                            key={code}
                                 className="px-2 py-1 rounded text-sm cursor-pointer border bg-gray-100"
                                 onClick={() => handleCopy(code === "HTML" ? children.html : children.jsx, code as "HTML" | "JSX")}
                             >

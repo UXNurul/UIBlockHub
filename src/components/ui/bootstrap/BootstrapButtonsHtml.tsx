@@ -46,19 +46,7 @@ const BootstrapButtonsHtml = ({ adjustIframeHeight }: { adjustIframeHeight: () =
         fetchData();
     }, []);
 
-    const parseCSS = (css?: string): React.CSSProperties => {
-        if (!css) return {};
-        return css.split(";").reduce((acc, rule) => {
-            if (rule.trim()) {
-                const [key, value] = rule.split(":").map((s) => s.trim());
-                if (key && value) {
-                    const camelCasedKey = key.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-                    acc[camelCasedKey as keyof React.CSSProperties] = value;
-                }
-            }
-            return acc;
-        }, {} as React.CSSProperties);
-    };
+   
 
     return (
         <div>
@@ -82,7 +70,7 @@ const BootstrapButtonsHtml = ({ adjustIframeHeight }: { adjustIframeHeight: () =
                             preview: (
                                 <div className="border border-secondary rounded-3 p-3 d-flex gap-2">
                                     {buttons.map((btn) => (
-                                        <button key={btn.id} className={btn.class} style={parseCSS(btn.css)}>
+                                        <button key={btn.id} className={btn.class}>
                                             {btn.label}
                                         </button>
                                     ))}
@@ -96,8 +84,8 @@ const BootstrapButtonsHtml = ({ adjustIframeHeight }: { adjustIframeHeight: () =
                             jsx: (
                                 <pre className="bg-dark text-white px-4 py-5 rounded m-0">
                                     {buttons.map((btn) => {
-                                        const styleObject = parseCSS(btn.css);
-                                        return `<button className="${btn.class}"${btn.css ? ` style={${JSON.stringify(styleObject)}}` : ""}>${btn.label}</button>`;
+                                        
+                                        return `<button className="${btn.class}">${btn.label}</button>`;
                                     }).join("\n")}
                                 </pre>
                             ),

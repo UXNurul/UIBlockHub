@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 
 
@@ -123,12 +122,12 @@ const ComponentsPage = () => {
                             </svg>
                         </div>
                         <div className="border-base-content/10 border-t p-4">
-                            <h2 className="text-base-content/90 font-semibold">Button</h2>
+                            <h2 className="text-base-content/90 font-semibold">Buttons</h2>
                         </div>
                     </Link>
                     <a
                         className="bg-base-100 border-base-content/20 block size-full overflow-hidden rounded-xl border transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-md"
-                        href="/docs/components/card/"
+                        href="/tailwind/components/cards"
                     >
                         <div className="bg-base-200/20 flex h-52 items-center justify-center">
                             <svg width={206} height={152} viewBox="0 0 206 152" fill="none">
@@ -294,7 +293,7 @@ const ComponentsPage = () => {
                             </svg>
                         </div>
                         <div className="border-base-content/10 border-t p-4">
-                            <h2 className="text-base-content/90 font-semibold">Card</h2>
+                            <h2 className="text-base-content/90 font-semibold">Cards</h2>
                         </div>
                     </a>
 
