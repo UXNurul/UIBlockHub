@@ -1,0 +1,7 @@
+name = "uiblockhub"  # Name of your project
+compatibility_date = "2025-03-20"  # Required field for Wrangler compatibility
+
+[pages]
+# Define the build settings for Cloudflare Pages
+build_command = "npm install && npm run build"  # Replace with your actual build command
+build_output_dir = "dist"  # Replace with your output directory (e.g., "dist", "build")
