@@ -10,7 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudflare/vite-plugin": "^0.1.14",
+    "@cloudflare/workers-types": "^4.20250320.0",
     "@supabase/supabase-js": "^2.49.1",
+    "hono": "^4.7.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.3.0"
