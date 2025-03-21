@@ -7,6 +7,9 @@ import AboutPage from "./pages/AboutPage";
 import BootstrapButtonsPage from "./pages/bootstrap/BootstrapButtonsPage";
 import TailwindButtonsPage from "./pages/tailwind/TailwindButtonsPage";
 import TailwindCardsPage from "./pages/tailwind/TailwindCardsPage";
+import Add from "./pages/admin/Add";
+import Edit from "./pages/admin/Edit";
+import Components from "./pages/admin/Components";
 
 
 export default function App() {
@@ -57,6 +60,10 @@ export default function App() {
 
                 <Route path="/bootstrap/components/buttons" element={<BootstrapButtonsPage />} />
                 <Route path="/about" element={<AboutPage />} />
+
+                <Route path="/admin/components" element={<Components/>} />
+                <Route path="/admin/components/add" element={<Add/>} />
+                <Route path="/admin/components/edit" element={<Edit />} />
               </Routes>
             </main>
           </div>
